@@ -5,54 +5,58 @@ FROM mppmu/cuda-julia-anaconda:cuda100-julia11-anaconda3201812
 USER root
 WORKDIR /root
 
+RUN mkdir /gpfs
+RUN mkdir /gpfs/work
+RUN mkdir /gpfs/scratch
+RUN mkdir /cvmfs
 
 # Copy provisioning script(s):
 
 COPY provisioning/install-sw.sh /root/provisioning/
 
 
-# Install MXNet:
+# # Install MXNet:
 
-COPY provisioning/install-sw-scripts/mxnet-* provisioning/install-sw-scripts/
+# COPY provisioning/install-sw-scripts/mxnet-* provisioning/install-sw-scripts/
 
-ENV \
-    LD_LIBRARY_PATH="/opt/mxnet/lib:$LD_LIBRARY_PATH" \
-    MXNET_HOME="/opt/mxnet"
+# ENV \
+#     LD_LIBRARY_PATH="/opt/mxnet/lib:$LD_LIBRARY_PATH" \
+#     MXNET_HOME="/opt/mxnet"
 
-RUN true \
-    && yum install -y \
-        openblas-devel \
-        opencv-devel \
-    && provisioning/install-sw.sh mxnet apache/8beea18 /opt/mxnet
+# RUN true \
+#     && yum install -y \
+#         openblas-devel \
+#         opencv-devel \
+#     && provisioning/install-sw.sh mxnet apache/8beea18 /opt/mxnet
 
 
 # Install CLHep and Geant4:
 
-COPY provisioning/install-sw-scripts/clhep-* provisioning/install-sw-scripts/geant4-* provisioning/install-sw-scripts/
+# COPY provisioning/install-sw-scripts/clhep-* provisioning/install-sw-scripts/geant4-* provisioning/install-sw-scripts/
 
-ENV \
-    PATH="/opt/geant4/bin:/opt/clhep/bin:$PATH" \
-    LD_LIBRARY_PATH="/opt/geant4/lib64:/opt/clhep/lib:$LD_LIBRARY_PATH" \
-    G4ABLADATA="/opt/geant4/share/Geant4-10.5.0/data/G4ABLA3.1" \
-    G4ENSDFSTATEDATA="/opt/geant4/share/Geant4-10.5.0/data/G4ENSDFSTATE2.2" \
-    G4INCLDATA="/opt/geant4/share/Geant4-10.5.0/data/G4INCL1.0" \
-    G4LEDATA="/opt/geant4/share/Geant4-10.5.0/data/G4EMLOW7.7" \
-    G4LEVELGAMMADATA="/opt/geant4/share/Geant4-10.5.0/data/PhotonEvaporation5.3" \
-    G4NEUTRONHPDATA="/opt/geant4/share/Geant4-10.5.0/data/G4NDL4.5" \
-    G4PARTICLEXSDATA="/opt/geant4/share/Geant4-10.5.0/data/G4PARTICLEXS1.1" \
-    G4PIIDATA="/opt/geant4/share/Geant4-10.5.0/data/G4PII1.3" \
-    G4RADIOACTIVEDATA="/opt/geant4/share/Geant4-10.5.0/data/RadioactiveDecay5.3" \
-    G4REALSURFACEDATA="/opt/geant4/share/Geant4-10.5.0/data/RealSurface2.1.1" \
-    G4SAIDXSDATA="/opt/geant4/share/Geant4-10.5.0/data/G4SAIDDATA2.0" \
-    AllowForHeavyElements=1
+# ENV \
+#     PATH="/opt/geant4/bin:/opt/clhep/bin:$PATH" \
+#     LD_LIBRARY_PATH="/opt/geant4/lib64:/opt/clhep/lib:$LD_LIBRARY_PATH" \
+#     G4ABLADATA="/opt/geant4/share/Geant4-10.5.0/data/G4ABLA3.1" \
+#     G4ENSDFSTATEDATA="/opt/geant4/share/Geant4-10.5.0/data/G4ENSDFSTATE2.2" \
+#     G4INCLDATA="/opt/geant4/share/Geant4-10.5.0/data/G4INCL1.0" \
+#     G4LEDATA="/opt/geant4/share/Geant4-10.5.0/data/G4EMLOW7.7" \
+#     G4LEVELGAMMADATA="/opt/geant4/share/Geant4-10.5.0/data/PhotonEvaporation5.3" \
+#     G4NEUTRONHPDATA="/opt/geant4/share/Geant4-10.5.0/data/G4NDL4.5" \
+#     G4PARTICLEXSDATA="/opt/geant4/share/Geant4-10.5.0/data/G4PARTICLEXS1.1" \
+#     G4PIIDATA="/opt/geant4/share/Geant4-10.5.0/data/G4PII1.3" \
+#     G4RADIOACTIVEDATA="/opt/geant4/share/Geant4-10.5.0/data/RadioactiveDecay5.3" \
+#     G4REALSURFACEDATA="/opt/geant4/share/Geant4-10.5.0/data/RealSurface2.1.1" \
+#     G4SAIDXSDATA="/opt/geant4/share/Geant4-10.5.0/data/G4SAIDDATA2.0" \
+#     AllowForHeavyElements=1
 
-RUN true \
-    && yum install -y \
-        expat-devel xerces-c-devel zlib-devel \
-        libXmu-devel libXi-devel \
-        mesa-libGLU-devel motif-devel mesa-libGLw qt-devel \
-    && provisioning/install-sw.sh clhep 2.4.1.0 /opt/clhep \
-    && provisioning/install-sw.sh geant4 10.5.0 /opt/geant4
+# RUN true \
+#     && yum install -y \
+#         expat-devel xerces-c-devel zlib-devel \
+#         libXmu-devel libXi-devel \
+#         mesa-libGLU-devel motif-devel mesa-libGLw qt-devel \
+#     && provisioning/install-sw.sh clhep 2.4.1.0 /opt/clhep \
+#     && provisioning/install-sw.sh geant4 10.5.0 /opt/geant4
 
 
 # Install CERN ROOT:
@@ -85,10 +89,10 @@ RUN pip install metakernel
 ENV JULIA_CXX_RTTI="1"
 
 
-# Install ArrayFire:
+# # Install ArrayFire:
 
-RUN true \
-    && rpm -ihv "https://arrayfire.s3.amazonaws.com/3.6.2/ArrayFire-no-gl-v3.6.2_Linux_x86_64.rpm"
+# RUN true \
+#     && rpm -ihv "https://arrayfire.s3.amazonaws.com/3.6.2/ArrayFire-no-gl-v3.6.2_Linux_x86_64.rpm"
 
 
 # Install additional Jupyter-related Python packages:
@@ -119,11 +123,11 @@ RUN yum install -y \
         libusbx-devel
 
 
-# Install Nvidia visual profiler:
+# # Install Nvidia visual profiler:
 
-RUN true \
-    && yum install -y \
-        cuda-nvvp-10-0
+# RUN true \
+#     && yum install -y \
+#         cuda-nvvp-10-0
 
 
 # Install additional packages and clean up:
@@ -147,6 +151,11 @@ RUN yum install -y \
         http://linuxsoft.cern.ch/cern/centos/7/cern/x86_64/Packages/parallel-20150522-1.el7.cern.noarch.rpm \
     && yum clean all
 
+# Install mpi
+RUN yum install -y \
+    rdma libverbs \
+    openmpi3 openmpi3-devel
+#RUN module load mpi/openmpi3-x86_64
 
 # Set container-specific SWMOD_HOSTSPEC:
 
