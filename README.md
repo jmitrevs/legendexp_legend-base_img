@@ -12,7 +12,7 @@ The Docker image includes the following Software:
 * Node.js
 * Intel MPI 2018.3.222
 
-If rebuilding, one needs to download and put the Intel MPI tar file in provisioning/install-sw-scripts/, for example provisioning/install-sw-scripts/l_mpi_2018.3.222.tgz
+If rebuilding, one needs to download and put the Intel MPI tar file in `provisioning/install-sw-scripts/`, for example `provisioning/install-sw-scripts/l_mpi_2018.3.222.tgz`.
 
 
 ## Use with [NERSC Shifter](https://docs.nersc.gov/development/shifter/how-to-use/)
