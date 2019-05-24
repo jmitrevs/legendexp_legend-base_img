@@ -153,25 +153,18 @@ RUN yum install -y \
 
 # Install mpi
 RUN yum install -y \
-    rdma libverbs \
-    openmpi3 openmpi3-devel
+    rdma libverbs
 
-ENV	 PATH /usr/lib64/openmpi3/bin:$PATH
-ENV	 LD_LIBRARY_PATH /usr/lib64/openmpi3/lib:$LD_LIBRARY_PATH
-ENV	 PKG_CONFIG_PATH /usr/lib64/openmpi3/lib/pkgconfig:$PKG_CONFIG_PATH
-ENV	 PYTHONPATH /usr/lib64/python2.7/site-packages/openmpi3:$PYTHONPATH
-ENV	 MANPATH /usr/share/man/openmpi3-x86_64:$MANPATH
-ENV		 MPI_BIN /usr/lib64/openmpi3/bin 
-ENV		 MPI_SYSCONFIG /etc/openmpi3-x86_64 
-ENV		 MPI_FORTRAN_MOD_DIR /usr/lib64/gfortran/modules/openmpi3 
-ENV		 MPI_INCLUDE /usr/include/openmpi3-x86_64 
-ENV		 MPI_LIB /usr/lib64/openmpi3/lib 
-ENV		 MPI_MAN /usr/share/man/openmpi3-x86_64 
-ENV		 MPI_PYTHON_SITEARCH /usr/lib64/python2.7/site-packages/openmpi3 
-ENV		 MPI_PYTHON2_SITEARCH /usr/lib64/python2.7/site-packages/openmpi3 
-ENV		 MPI_COMPILER openmpi3-x86_64 
-ENV		 MPI_SUFFIX _openmpi3 
-ENV		 MPI_HOME /usr/lib64/openmpi3 
+COPY provisioning/install-sw-scripts/impi-* provisioning/install-sw-scripts/l_mpi_* provisioning/install-sw-scripts/
+RUN provisioning/install-sw.sh impi 2018.3.222 /opt/intel
+
+ENV I_MPI_ROOT=/opt/intel/compilers_and_libraries_2018.3.222/linux/mpi
+ENV PATH="${I_MPI_ROOT}/intel64/bin:${PATH}"
+ENV CLASSPATH="${I_MPI_ROOT}/intel64/lib/mpi.jar"
+ENV LD_LIBRARY_PATH="${I_MPI_ROOT}/intel64/lib:${I_MPI_ROOT}/mic/lib:${LD_LIBRARY_PATH}"
+ENV MANPATH="${I_MPI_ROOT}/man:${MANPATH}"
+ENV library_kind=release_mt
+ENV LD_LIBRARY_PATH="${I_MPI_ROOT}/intel64/lib/${library_kind}:${I_MPI_ROOT}/mic/lib/${library_kind}:${LD_LIBRARY_PATH}"
 
 # Set container-specific SWMOD_HOSTSPEC:
 

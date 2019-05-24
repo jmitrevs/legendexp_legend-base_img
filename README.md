@@ -1,21 +1,18 @@
-# Linux Base Container for the LEGEND Experiment
+# Linux Base Container for C2PAP using Intel MPI
 
-This repository contains the files necessary to generate a CentOS-7 based Docker image that contains a basic software stack for the LEGEND experiment. The generated image does contain not any LEGEND-specific simulation and data processing/analysis software, but is intended to provide the basis for container images that do, as well as for LEGEND software development in general.
+This repository contains the files necessary to generate a CentOS-7 based Docker image that contains a basic software stack developing Julia code with MPI on c2pap.
 
 The Docker image includes the following Software:
 
 * Anaconda v2018.12 (Python 3.7)
-* ArrayFire v3.6
 * GitHub Atom v1.34
 * CERN ROOT v6.14
-* CUDA v10.0
-* Geant4 v10.5 and CLHep
 * HDF5 (thread-safe build)
 * Julia v1.1
-* MXNet v1.3
 * Node.js
+* Intel MPI 2018.3.222
 
-Builds of this image are available on [Dockerhub](https://hub.docker.com/r/legendexp/legend-base/).
+If rebuilding, one needs to download and put the Intel MPI tar file in provisioning/install-sw-scripts/, for example provisioning/install-sw-scripts/l_mpi_2018.3.222.tgz
 
 
 ## Use with [NERSC Shifter](https://docs.nersc.gov/development/shifter/how-to-use/)
@@ -30,7 +27,7 @@ Then try running an interactive session via
     shifter --image docker:legendexp/legend-base:latest -- /bin/bash
 
 
-## Use with [Singularity](https://www.sylabs.io/singularity/)
+## Use with [Singularity](https://www.sylabs.io/singularity/) (changing the container name appropriately)
 
 
 With Singularity v2.x, convert the Docker image to a Singularity image via
